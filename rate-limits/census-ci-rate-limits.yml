@@ -1,0 +1,54 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Census
+providerId: census-ci
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Reverse ETL
+- Data Activation
+- Syncs
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Census Management API applies per-workspace request rate limiting on the
+  Bearer-token-authenticated endpoints (sources, destinations, syncs, sync runs,
+  models/datasets, connectors, segments). Requests that exceed the limit are
+  rejected with HTTP 429. Specific per-endpoint request-per-minute values are
+  not published as fixed public numbers and are not reconciled in this artifact.
+notes: >-
+  Verify current per-endpoint limits and any Retry-After behavior against the
+  Census API reference on reconciliation. Sync throughput itself is governed by
+  plan sync entitlements rather than API request limits.
+sources:
+- https://developers.getcensus.com
+- https://www.getcensus.com/pricing
+responseCodes:
+  throttled: 429
+limits:
+- name: Management API Requests
+  scope: workspace
+  metric: requests
+  limit: see provider documentation
+  notes: Per-workspace request rate limit across Management API endpoints; exceeding returns 429.
+- name: Sync Trigger Requests
+  scope: workspace
+  metric: requests
+  limit: see provider documentation
+  notes: Programmatic sync triggering is rate limited per workspace to protect scheduling.
+- name: Sync Entitlements
+  scope: workspace
+  metric: records
+  limit: plan-based
+  notes: Records synced are governed by plan entitlements, not API request rate limits.
+policies:
+- name: Tiered Limits
+  description: Limits and entitlements scale with Free, Platform, and Enterprise plans.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

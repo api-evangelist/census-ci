@@ -1,0 +1,88 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Census
+providerId: census-ci
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Reverse ETL
+- Data Activation
+- Syncs
+- Audience Hub
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Census spend. Census bills on active syncs and the records they
+  move (sync entitlements), plus monthly tracked users (MTU) for the Audience
+  Hub, across Free, Platform, and Enterprise plans. The Management API is not
+  separately metered; cost is driven by how much data is activated and how many
+  users are tracked.
+notes: >-
+  Entitlement bands, per-record rates, and MTU pricing are quoted by Census;
+  verify against the pricing page during reconciliation.
+sources:
+- https://www.getcensus.com/pricing
+- https://developers.getcensus.com
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Census
+serviceCategory: Data Integration and Activation
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+focusColumns:
+  ServiceName: Census
+  ServiceCategory: Data Integration and Activation
+  ProviderName: Census
+  PublisherName: Census
+  InvoiceIssuerName: Census
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: active_syncs
+  description: Number of active syncs configured and running in the workspace.
+  unit: syncs
+  aggregation: max
+  dimensions:
+  - workspace
+  - destination
+- name: records_synced
+  description: Records processed/updated by syncs against plan entitlements.
+  unit: records
+  aggregation: sum
+  dimensions:
+  - workspace
+  - sync
+  - destination
+- name: monthly_tracked_users
+  description: Distinct users tracked by the Audience Hub in a billing month (MTU).
+  unit: tracked_users
+  aggregation: max
+  dimensions:
+  - workspace
+  - entity
+principles:
+- name: Visibility
+  description: Track active syncs, records synced, and Audience Hub MTUs per workspace and destination.
+- name: Allocation
+  description: Attribute sync and MTU consumption to teams and use cases via naming and workspace structure.
+- name: Optimization
+  description: Pause unused syncs, right-size schedule frequency, dedupe overlapping segments, and consolidate models to reduce records synced and MTUs.
+- name: Accountability
+  description: Assign owners per sync and segment; review entitlement and MTU burn monthly against budget.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

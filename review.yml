@@ -1,0 +1,86 @@
+aid: census-ci
+name: Census
+review:
+  question: Does Census expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-01'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was created. The Census Management API is a
+    synchronous REST/HTTPS API with no documented streaming, SSE, or
+    WebSocket surface. Near-real-time behavior is delivered by the sync
+    engine on a schedule and by the POST /syncs/{id}/trigger endpoint plus
+    polling of sync runs, not by a persistent event stream.
+findings:
+  summary: |
+    Census does not publish a documented public WebSocket API. The Census
+    Management API (base https://app.getcensus.com/api/v1) is a REST/HTTPS
+    API authenticated with a workspace API access token as a Bearer token.
+    Data activation is batch/scheduled reverse ETL; consumers trigger syncs
+    via POST /syncs/{id}/trigger and observe results by polling sync runs
+    (GET /sync_runs, GET /sync_runs/{id}). No ws:// or wss:// endpoint is
+    documented. Census does support outbound event delivery for sync
+    completion via webhooks/notifications, but that is HTTP callback, not a
+    WebSocket surface.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://app.getcensus.com/api/v1
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented for the Census Management API.
+  endpointsConfirmedRest:
+    - GET    https://app.getcensus.com/api/v1/sources
+    - POST   https://app.getcensus.com/api/v1/sources
+    - GET    https://app.getcensus.com/api/v1/sources/{source_id}
+    - GET    https://app.getcensus.com/api/v1/sources/{source_id}/objects
+    - GET    https://app.getcensus.com/api/v1/destinations
+    - POST   https://app.getcensus.com/api/v1/destinations
+    - GET    https://app.getcensus.com/api/v1/destinations/{destination_id}
+    - GET    https://app.getcensus.com/api/v1/destinations/{destination_id}/objects
+    - GET    https://app.getcensus.com/api/v1/connectors
+    - GET    https://app.getcensus.com/api/v1/connectors/{service_name}/object_types
+    - GET    https://app.getcensus.com/api/v1/syncs
+    - POST   https://app.getcensus.com/api/v1/syncs
+    - GET    https://app.getcensus.com/api/v1/syncs/{sync_id}
+    - PATCH  https://app.getcensus.com/api/v1/syncs/{sync_id}
+    - DELETE https://app.getcensus.com/api/v1/syncs/{sync_id}
+    - POST   https://app.getcensus.com/api/v1/syncs/{sync_id}/trigger
+    - GET    https://app.getcensus.com/api/v1/syncs/{sync_id}/sync_runs
+    - GET    https://app.getcensus.com/api/v1/sync_runs
+    - GET    https://app.getcensus.com/api/v1/sync_runs/{sync_run_id}
+    - GET    https://app.getcensus.com/api/v1/models
+    - POST   https://app.getcensus.com/api/v1/models
+    - GET    https://app.getcensus.com/api/v1/models/{model_id}
+    - PATCH  https://app.getcensus.com/api/v1/models/{model_id}
+    - GET    https://app.getcensus.com/api/v1/datasets
+    - POST   https://app.getcensus.com/api/v1/datasets
+    - GET    https://app.getcensus.com/api/v1/segments
+    - POST   https://app.getcensus.com/api/v1/segments
+    - GET    https://app.getcensus.com/api/v1/segments/{segment_id}
+sources:
+  - url: https://developers.getcensus.com/api-reference/introduction/overview
+    type: Documentation
+    note: Management API overview; REST base https://app.getcensus.com/api/v1, Bearer workspace token. No WebSocket mentioned.
+  - url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+    type: APIReference
+    note: Syncs and sync-run endpoints; all HTTPS REST.
+  - url: https://www.getcensus.com/blog/trigger-sync-api-announcement
+    type: Documentation
+    note: Sync trigger API powers Airflow/Dagster/Prefect/dbt Cloud via REST + polling, not streaming.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists and no SSE stream is documented, so
+    no AsyncAPI artifact was authored. The catalog entry models the Census
+    Management API as REST with an OpenAPI specification only. Census was
+    acquired by Fivetran; developers.getcensus.com / docs.getcensus.com now
+    301-redirect to fivetran.com/docs/activations, but the Census Management
+    API and app.getcensus.com base URL remain the operative surface.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

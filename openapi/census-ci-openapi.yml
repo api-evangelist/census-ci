@@ -1,0 +1,1040 @@
+openapi: 3.0.1
+info:
+  title: Census Management API
+  description: >-
+    The Census Management API lets you integrate core Census reverse ETL and data
+    activation functionality into your workflows. Manage sources, destinations,
+    syncs, sync runs, datasets/models, connectors, and Audience Hub segments.
+    Requests are authenticated with a workspace API access token passed as a
+    Bearer token in the Authorization header. This is a faithful, representative
+    specification of the public Census Management API; consult the Census API
+    reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+  - url: https://app.getcensus.com/api/v1
+    description: Census Management API (region-specific base URL may vary)
+security:
+  - bearerAuth: []
+tags:
+  - name: Sources
+  - name: Destinations
+  - name: Syncs
+  - name: Sync Runs
+  - name: Datasets and Models
+  - name: Connectors
+  - name: Segments
+paths:
+  /sources:
+    get:
+      operationId: listSources
+      tags:
+        - Sources
+      summary: List sources
+      description: Returns the source connections configured in the workspace.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of sources.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceList'
+    post:
+      operationId: createSource
+      tags:
+        - Sources
+      summary: Create a source
+      description: Creates a new source connection in the workspace.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceCreate'
+      responses:
+        '201':
+          description: The created source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceResponse'
+  /sources/{source_id}:
+    get:
+      operationId: getSource
+      tags:
+        - Sources
+      summary: Fetch a source
+      parameters:
+        - $ref: '#/components/parameters/sourceId'
+      responses:
+        '200':
+          description: A source object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceResponse'
+  /sources/{source_id}/objects:
+    get:
+      operationId: listSourceObjects
+      tags:
+        - Sources
+      summary: List source objects
+      description: Lists the tables, views, and models available in the source.
+      parameters:
+        - $ref: '#/components/parameters/sourceId'
+      responses:
+        '200':
+          description: A list of source objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceObjectList'
+  /destinations:
+    get:
+      operationId: listDestinations
+      tags:
+        - Destinations
+      summary: List destinations
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of destinations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationList'
+    post:
+      operationId: createDestination
+      tags:
+        - Destinations
+      summary: Create a destination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DestinationCreate'
+      responses:
+        '201':
+          description: The created destination.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationResponse'
+  /destinations/{destination_id}:
+    get:
+      operationId: getDestination
+      tags:
+        - Destinations
+      summary: Fetch a destination
+      parameters:
+        - $ref: '#/components/parameters/destinationId'
+      responses:
+        '200':
+          description: A destination object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationResponse'
+  /destinations/{destination_id}/objects:
+    get:
+      operationId: listDestinationObjects
+      tags:
+        - Destinations
+      summary: List destination objects
+      description: Lists the objects Census can write to in the destination.
+      parameters:
+        - $ref: '#/components/parameters/destinationId'
+      responses:
+        '200':
+          description: A list of destination objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationObjectList'
+  /connectors:
+    get:
+      operationId: listConnectors
+      tags:
+        - Connectors
+      summary: List connectors
+      description: Lists the connector services Census supports.
+      responses:
+        '200':
+          description: A list of connector services.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConnectorList'
+  /connectors/{service_name}/object_types:
+    get:
+      operationId: listDestinationObjectTypes
+      tags:
+        - Connectors
+      summary: List destination object types
+      description: >-
+        Lists the object types available for a given destination connector
+        service (for example salesforce, hubspot, google_ads).
+      parameters:
+        - name: service_name
+          in: path
+          required: true
+          description: The connector service name, e.g. salesforce.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of object types for the service.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectTypeList'
+  /syncs:
+    get:
+      operationId: listSyncs
+      tags:
+        - Syncs
+      summary: List syncs
+      description: Returns the syncs configured in the workspace.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+        - name: order
+          in: query
+          description: Sort order for the results.
+          schema:
+            type: string
+            enum:
+              - asc
+              - desc
+      responses:
+        '200':
+          description: A paginated list of syncs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncList'
+    post:
+      operationId: createSync
+      tags:
+        - Syncs
+      summary: Create a sync
+      description: >-
+        Creates a new sync mapping a source dataset/model to a destination
+        object with field mappings, an operation, and a schedule.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncCreate'
+      responses:
+        '201':
+          description: The created sync.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+  /syncs/{sync_id}:
+    get:
+      operationId: getSync
+      tags:
+        - Syncs
+      summary: Fetch a sync
+      parameters:
+        - $ref: '#/components/parameters/syncId'
+      responses:
+        '200':
+          description: A sync object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+    patch:
+      operationId: updateSync
+      tags:
+        - Syncs
+      summary: Update a sync
+      parameters:
+        - $ref: '#/components/parameters/syncId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncUpdate'
+      responses:
+        '200':
+          description: The updated sync.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+    delete:
+      operationId: deleteSync
+      tags:
+        - Syncs
+      summary: Delete a sync
+      parameters:
+        - $ref: '#/components/parameters/syncId'
+      responses:
+        '200':
+          description: The sync was deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+  /syncs/{sync_id}/trigger:
+    post:
+      operationId: triggerSync
+      tags:
+        - Syncs
+      summary: Trigger a sync run
+      description: >-
+        Triggers a new run of the sync. Returns a sync run id that can be polled
+        for status. Powers Census orchestration integrations (Airflow, Dagster,
+        Prefect, dbt Cloud).
+      parameters:
+        - $ref: '#/components/parameters/syncId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                force_full_sync:
+                  type: boolean
+                  description: Force a full (non-incremental) sync run.
+      responses:
+        '200':
+          description: The triggered sync run identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerResponse'
+  /syncs/{sync_id}/sync_runs:
+    get:
+      operationId: listSyncRunsForSync
+      tags:
+        - Sync Runs
+      summary: List sync runs for a sync
+      parameters:
+        - $ref: '#/components/parameters/syncId'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of sync runs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunList'
+  /sync_runs:
+    get:
+      operationId: listSyncRuns
+      tags:
+        - Sync Runs
+      summary: List sync runs
+      description: Lists sync runs across the workspace.
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of sync runs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunList'
+  /sync_runs/{sync_run_id}:
+    get:
+      operationId: getSyncRun
+      tags:
+        - Sync Runs
+      summary: Fetch a sync run
+      parameters:
+        - name: sync_run_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A sync run object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunResponse'
+  /models:
+    get:
+      operationId: listModels
+      tags:
+        - Datasets and Models
+      summary: List models
+      description: Lists the SQL models defined in the workspace.
+      responses:
+        '200':
+          description: A list of models.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+    post:
+      operationId: createModel
+      tags:
+        - Datasets and Models
+      summary: Create a model
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreate'
+      responses:
+        '201':
+          description: The created model.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+  /models/{model_id}:
+    get:
+      operationId: getModel
+      tags:
+        - Datasets and Models
+      summary: Fetch a model
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A model object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+    patch:
+      operationId: updateModel
+      tags:
+        - Datasets and Models
+      summary: Update a model
+      parameters:
+        - name: model_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreate'
+      responses:
+        '200':
+          description: The updated model.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+  /datasets:
+    get:
+      operationId: listDatasets
+      tags:
+        - Datasets and Models
+      summary: List datasets
+      responses:
+        '200':
+          description: A list of datasets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+    post:
+      operationId: createDataset
+      tags:
+        - Datasets and Models
+      summary: Create a dataset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreate'
+      responses:
+        '201':
+          description: The created dataset.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+  /segments:
+    get:
+      operationId: listSegments
+      tags:
+        - Segments
+      summary: List segments
+      description: Lists Audience Hub segments in the workspace.
+      responses:
+        '200':
+          description: A list of segments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentList'
+    post:
+      operationId: createSegment
+      tags:
+        - Segments
+      summary: Create a segment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentCreate'
+      responses:
+        '201':
+          description: The created segment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentResponse'
+  /segments/{segment_id}:
+    get:
+      operationId: getSegment
+      tags:
+        - Segments
+      summary: Fetch a segment
+      parameters:
+        - name: segment_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A segment object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentResponse'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        default: 1
+    perPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        default: 25
+    sourceId:
+      name: source_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    destinationId:
+      name: destination_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    syncId:
+      name: sync_id
+      in: path
+      required: true
+      schema:
+        type: integer
+  schemas:
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+    Source:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        name:
+          type: string
+          example: Production Snowflake
+        type:
+          type: string
+          example: snowflake
+        connection_details:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    SourceCreate:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          example: snowflake
+        credentials:
+          type: object
+          additionalProperties: true
+    SourceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          $ref: '#/components/schemas/Source'
+    SourceList:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    SourceObject:
+      type: object
+      properties:
+        name:
+          type: string
+          example: analytics.public.users
+        type:
+          type: string
+          example: table
+    SourceObjectList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceObject'
+    Destination:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 202
+        name:
+          type: string
+          example: Salesforce Production
+        type:
+          type: string
+          example: salesforce
+        created_at:
+          type: string
+          format: date-time
+    DestinationCreate:
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          example: salesforce
+        credentials:
+          type: object
+          additionalProperties: true
+    DestinationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Destination'
+    DestinationList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Destination'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    DestinationObject:
+      type: object
+      properties:
+        label:
+          type: string
+          example: Contact
+        full_name:
+          type: string
+          example: contact
+    DestinationObjectList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DestinationObject'
+    Connector:
+      type: object
+      properties:
+        service_name:
+          type: string
+          example: salesforce
+        label:
+          type: string
+          example: Salesforce
+    ConnectorList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+    ObjectType:
+      type: object
+      properties:
+        label:
+          type: string
+          example: Lead
+        full_name:
+          type: string
+          example: lead
+        allows_custom_fields:
+          type: boolean
+    ObjectTypeList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectType'
+    FieldMapping:
+      type: object
+      properties:
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+              example: column
+            data:
+              type: string
+              example: email
+        to:
+          type: string
+          example: Email
+        is_primary_identifier:
+          type: boolean
+    Sync:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 303
+        label:
+          type: string
+          example: Sync Users to Salesforce Contacts
+        operation:
+          type: string
+          enum:
+            - upsert
+            - mirror
+            - append
+            - update
+            - create
+          example: upsert
+        paused:
+          type: boolean
+        schedule_frequency:
+          type: string
+          example: hourly
+        source_attributes:
+          type: object
+          additionalProperties: true
+        destination_attributes:
+          type: object
+          additionalProperties: true
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+        created_at:
+          type: string
+          format: date-time
+    SyncCreate:
+      type: object
+      required:
+        - operation
+        - source_attributes
+        - destination_attributes
+        - mappings
+      properties:
+        label:
+          type: string
+        operation:
+          type: string
+          enum:
+            - upsert
+            - mirror
+            - append
+            - update
+            - create
+        source_attributes:
+          type: object
+          additionalProperties: true
+        destination_attributes:
+          type: object
+          additionalProperties: true
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+        schedule_frequency:
+          type: string
+          example: hourly
+    SyncUpdate:
+      type: object
+      properties:
+        label:
+          type: string
+        paused:
+          type: boolean
+        schedule_frequency:
+          type: string
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+    SyncResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Sync'
+    SyncList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sync'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    TriggerResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            sync_run_id:
+              type: integer
+              example: 987654
+    SyncRun:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 987654
+        sync_id:
+          type: integer
+          example: 303
+        status:
+          type: string
+          enum:
+            - queued
+            - working
+            - completed
+            - failed
+            - skipped
+          example: completed
+        error_message:
+          type: string
+          nullable: true
+        records_processed:
+          type: integer
+          example: 12000
+        records_updated:
+          type: integer
+          example: 340
+        records_failed:
+          type: integer
+          example: 2
+        records_invalid:
+          type: integer
+          example: 0
+        created_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+    SyncRunResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/SyncRun'
+    SyncRunList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncRun'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Model:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 404
+        name:
+          type: string
+          example: active_users
+        query:
+          type: string
+          example: SELECT id, email, plan FROM analytics.users WHERE active
+        source_id:
+          type: integer
+          example: 101
+        created_at:
+          type: string
+          format: date-time
+    ModelCreate:
+      type: object
+      required:
+        - name
+        - query
+        - source_id
+      properties:
+        name:
+          type: string
+        query:
+          type: string
+        source_id:
+          type: integer
+    ModelResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Model'
+    ModelList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    Segment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 505
+        name:
+          type: string
+          example: High Value Customers
+        entity:
+          type: string
+          example: users
+        filters:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    SegmentCreate:
+      type: object
+      required:
+        - name
+        - entity
+      properties:
+        name:
+          type: string
+        entity:
+          type: string
+        filters:
+          type: object
+          additionalProperties: true
+    SegmentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Segment'
+    SegmentList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Segment'

@@ -1,0 +1,113 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Census
+providerId: census-ci
+created: '2026-07-01'
+modified: '2026-07-01'
+reconciled: false
+tags:
+- Reverse ETL
+- Data Activation
+- Syncs
+- Audience Hub
+- Plans
+description: >-
+  Census pricing centers on active syncs (records / entitlements) plus, for the
+  Audience Hub, monthly tracked users (MTU). The published tiers are Free (a
+  no-cost starter with a limited number of syncs), Platform (self-serve paid,
+  usage- and entitlement-based across syncs and MTUs), and Enterprise (custom
+  volume, security, and support). Exact record allowances, sync counts, and
+  MTU bands are quoted by Census; verify current figures on the pricing page.
+notes: >-
+  Census does not meter the Management API itself; billing is driven by active
+  syncs and Audience Hub MTUs. Figures below are representative tier structure,
+  not exact quotes, and should be reconciled against the current pricing page.
+sources:
+- https://www.getcensus.com/pricing
+- https://developers.getcensus.com
+plans:
+- id: census-free
+  name: Free
+  type: free
+  description: >-
+    No-cost starter plan with a limited number of active syncs, suited to
+    evaluation and small use cases. Includes core reverse ETL to supported
+    destinations.
+  entries:
+  - label: Active Syncs
+    name: free_syncs
+    type: quota
+    metric: syncs
+    limit: 2
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: '0.00'
+    userMultiplied: false
+  elements:
+  - name: Reverse ETL Syncs
+  - name: Core Destinations
+  - name: Management API
+- id: census-platform
+  name: Platform
+  type: usage
+  description: >-
+    Self-serve paid plan billed on sync entitlements (records synced) and, for
+    the Audience Hub, monthly tracked users. Adds more syncs, connectors,
+    scheduling, and observability than Free.
+  entries:
+  - label: Active Syncs
+    name: platform_syncs
+    type: usage
+    metric: syncs
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: usage- and entitlement-based; see pricing page
+    userMultiplied: false
+  - label: Monthly Tracked Users (Audience Hub)
+    name: platform_mtu
+    type: usage
+    metric: tracked_users
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1000
+    price: MTU-based; see pricing page
+    userMultiplied: false
+  elements:
+  - name: Reverse ETL Syncs
+  - name: Audience Hub
+  - name: 200+ Destinations
+  - name: Scheduling
+  - name: Observability
+  - name: Management API
+- id: census-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom plan with volume sync and MTU commitments, advanced security
+    (SSO, roles, audit), dedicated support, and negotiated terms. Contact
+    Census sales.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Custom Volume Pricing
+  - name: SSO and RBAC
+  - name: Audit Logging
+  - name: Dedicated Support
+  - name: SLAs
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,201 @@
+aid: census-ci
+url: https://raw.githubusercontent.com/api-evangelist/census-ci/refs/heads/main/apis.yml
+name: Census
+kind: company
+description: Census is a reverse ETL and data activation platform that syncs modeled
+  data out of the cloud data warehouse into 200+ business tools (CRM, ads, marketing,
+  support, and analytics), plus an Audience Hub for building and activating segments.
+  The Census Management API (base https://app.getcensus.com/api/v1, Bearer workspace
+  token) lets teams manage sources, destinations, syncs, sync runs, datasets/models,
+  connections, and segments/audiences programmatically.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Reverse ETL
+- Data Activation
+- Data Warehouse
+- Syncs
+- Audience Hub
+- Data Marketing
+created: '2026-07-01'
+modified: '2026-07-01'
+specificationVersion: '0.19'
+apis:
+- aid: census-ci:census-sources-api
+  name: Census Sources API
+  tags:
+  - Sources
+  - Data Warehouse
+  - Connections
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/sources
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/sources
+    type: Documentation
+  - url: https://developers.getcensus.com/api-reference/sources/list-sources
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: Manage source connections - the warehouses and databases (Snowflake,
+    BigQuery, Redshift, Databricks, Postgres) Census reads modeled data from. List,
+    fetch, and create sources, and enumerate their available source objects.
+- aid: census-ci:census-destinations-api
+  name: Census Destinations API
+  tags:
+  - Destinations
+  - Connectors
+  - Business Tools
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/destinations
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/destinations
+    type: Documentation
+  - url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: Manage destination connections across 200+ supported business tools
+    and inspect the object types and fields Census can write to per connector service.
+- aid: census-ci:census-syncs-api
+  name: Census Syncs API
+  tags:
+  - Syncs
+  - Reverse ETL
+  - Mappings
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/syncs
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+    type: Documentation
+  - url: https://developers.getcensus.com/api-reference/syncs/list-syncs
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: List, fetch, create, update, delete, and trigger syncs. A sync maps
+    a source dataset/model to a destination object with field mappings, an operation
+    (upsert, mirror, append, update), and a schedule. The trigger endpoint powers
+    Airflow, Dagster, Prefect, and dbt Cloud orchestration.
+- aid: census-ci:census-sync-runs-api
+  name: Census Sync Runs API
+  tags:
+  - Sync Runs
+  - Observability
+  - Status
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/sync-runs
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/sync-runs
+    type: Documentation
+  - url: https://developers.getcensus.com/api-reference/sync-runs/list-sync-runs
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: Read the execution history and live status of syncs - records processed,
+    updated, failed, and invalid per run - to monitor and observe data activation
+    pipelines.
+- aid: census-ci:census-datasets-models-api
+  name: Census Datasets & Models API
+  tags:
+  - Datasets
+  - Models
+  - SQL
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/models
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/models
+    type: Documentation
+  - url: https://developers.getcensus.com/dataset-api/guide
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: Manage the SQL models and datasets that define the source-of-truth data
+    Census syncs - list, fetch, create, and update SQL-backed models and datasets used
+    as sync sources.
+- aid: census-ci:census-connections-api
+  name: Census Connections API
+  tags:
+  - Connections
+  - Connectors
+  - Catalog
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/connectors
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/connectors
+    type: Documentation
+  - url: https://developers.getcensus.com/api-reference/connectors/list-destination-object-types
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: List available connectors and, for a given destination service, enumerate
+    its supported object types so integrations can discover what Census can read from
+    and write to.
+- aid: census-ci:census-segments-audiences-api
+  name: Census Segments & Audiences API
+  tags:
+  - Segments
+  - Audiences
+  - Audience Hub
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://developers.getcensus.com/api-reference/segments
+  baseURL: https://app.getcensus.com/api/v1
+  properties:
+  - url: https://developers.getcensus.com/api-reference/segments
+    type: Documentation
+  - url: https://developers.getcensus.com/api-reference/segments/list-segments
+    type: APIReference
+  - url: openapi/census-ci-openapi.yml
+    type: OpenAPI
+  - url: collections/census-ci.postman_collection.json
+    type: PostmanCollection
+  - url: collections/census-ci.opencollection.json
+    type: OpenCollection
+  description: Build and activate audience segments in the Census Audience Hub - list,
+    fetch, and create segments defined over an entity, then sync those audiences to
+    marketing and advertising destinations.
+common:
+- type: GitHubOrganization
+  url: https://github.com/sutrolabs
+- type: LinkedIn
+  url: https://www.linkedin.com/company/getcensus
+- type: Website
+  url: https://www.getcensus.com
+- type: Documentation
+  url: https://developers.getcensus.com
+- type: Plans
+  url: plans/census-ci-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/census-ci-rate-limits.yml
+- type: FinOps
+  url: finops/census-ci-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,452 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Management API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sources",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sources",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sources"
+          },
+          "docs": "Returns the source connections configured in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/sources",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new source connection in the workspace."
+        },
+        {
+          "info": {
+            "name": "Fetch a source",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sources/:source_id"
+          },
+          "docs": "Fetch a source"
+        },
+        {
+          "info": {
+            "name": "List source objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sources/:source_id/objects"
+          },
+          "docs": "Lists the tables, views, and models available in the source."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Destinations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List destinations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations"
+          },
+          "docs": "List destinations"
+        },
+        {
+          "info": {
+            "name": "Create a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/destinations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a destination"
+        },
+        {
+          "info": {
+            "name": "Fetch a destination",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations/:destination_id"
+          },
+          "docs": "Fetch a destination"
+        },
+        {
+          "info": {
+            "name": "List destination objects",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/destinations/:destination_id/objects"
+          },
+          "docs": "Lists the objects Census can write to in the destination."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Connectors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List connectors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/connectors"
+          },
+          "docs": "Lists the connector services Census supports."
+        },
+        {
+          "info": {
+            "name": "List destination object types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/connectors/:service_name/object_types",
+            "params": [
+              {
+                "name": "service_name",
+                "value": "",
+                "type": "path",
+                "description": "The connector service name, e.g. salesforce."
+              }
+            ]
+          },
+          "docs": "Lists the object types available for a given destination connector service (for example salesforce, hubspot, google_ads)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Syncs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List syncs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs"
+          },
+          "docs": "Returns the syncs configured in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/syncs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new sync mapping a source dataset/model to a destination object with field mappings, an operation, and a schedule."
+        },
+        {
+          "info": {
+            "name": "Fetch a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id"
+          },
+          "docs": "Fetch a sync"
+        },
+        {
+          "info": {
+            "name": "Update a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a sync"
+        },
+        {
+          "info": {
+            "name": "Delete a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id"
+          },
+          "docs": "Delete a sync"
+        },
+        {
+          "info": {
+            "name": "Trigger a sync run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id/trigger",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Triggers a new run of the sync. Returns a sync run id that can be polled for status. Powers Census orchestration integrations (Airflow, Dagster, Prefect, dbt Cloud)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Sync Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sync runs for a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id/sync_runs"
+          },
+          "docs": "List sync runs for a sync"
+        },
+        {
+          "info": {
+            "name": "List sync runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sync_runs"
+          },
+          "docs": "Lists sync runs across the workspace."
+        },
+        {
+          "info": {
+            "name": "Fetch a sync run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sync_runs/:sync_run_id",
+            "params": [
+              {
+                "name": "sync_run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a sync run"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Datasets and Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/models"
+          },
+          "docs": "Lists the SQL models defined in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/models",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a model"
+        },
+        {
+          "info": {
+            "name": "Fetch a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/models/:model_id",
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a model"
+        },
+        {
+          "info": {
+            "name": "Update a model",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/models/:model_id",
+            "params": [
+              {
+                "name": "model_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a model"
+        },
+        {
+          "info": {
+            "name": "List datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/datasets"
+          },
+          "docs": "List datasets"
+        },
+        {
+          "info": {
+            "name": "Create a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/datasets",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a dataset"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Segments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List segments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/segments"
+          },
+          "docs": "Lists Audience Hub segments in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create a segment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/segments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a segment"
+        },
+        {
+          "info": {
+            "name": "Fetch a segment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/segments/:segment_id",
+            "params": [
+              {
+                "name": "segment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a segment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
