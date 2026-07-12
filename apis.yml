@@ -182,6 +182,12 @@ apis:
     fetch, and create segments defined over an entity, then sync those audiences to
     marketing and advertising destinations.
 common:
+- type: TrustCenter
+  url: security/census-ci-trust-center.yml
+- type: DomainSecurity
+  url: security/census-ci-domain-security.yml
+- type: Authentication
+  url: authentication/census-ci-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/sutrolabs
 - type: LinkedIn
