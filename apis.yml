@@ -182,6 +182,8 @@ apis:
     fetch, and create segments defined over an entity, then sync those audiences to
     marketing and advertising destinations.
 common:
+- type: AgenticAccess
+  url: agentic-access/census-ci-agentic-access.yml
 - type: TrustCenter
   url: security/census-ci-trust-center.yml
 - type: DomainSecurity
