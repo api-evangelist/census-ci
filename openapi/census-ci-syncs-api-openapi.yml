@@ -1,0 +1,306 @@
+openapi: 3.0.1
+info:
+  title: Census Management Connectors Syncs API
+  description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: Census Management API (region-specific base URL may vary)
+security:
+- bearerAuth: []
+tags:
+- name: Syncs
+paths:
+  /syncs:
+    get:
+      operationId: listSyncs
+      tags:
+      - Syncs
+      summary: List syncs
+      description: Returns the syncs configured in the workspace.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      - name: order
+        in: query
+        description: Sort order for the results.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+      responses:
+        '200':
+          description: A paginated list of syncs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncList'
+    post:
+      operationId: createSync
+      tags:
+      - Syncs
+      summary: Create a sync
+      description: Creates a new sync mapping a source dataset/model to a destination object with field mappings, an operation, and a schedule.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncCreate'
+      responses:
+        '201':
+          description: The created sync.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+  /syncs/{sync_id}:
+    get:
+      operationId: getSync
+      tags:
+      - Syncs
+      summary: Fetch a sync
+      parameters:
+      - $ref: '#/components/parameters/syncId'
+      responses:
+        '200':
+          description: A sync object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+    patch:
+      operationId: updateSync
+      tags:
+      - Syncs
+      summary: Update a sync
+      parameters:
+      - $ref: '#/components/parameters/syncId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncUpdate'
+      responses:
+        '200':
+          description: The updated sync.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncResponse'
+    delete:
+      operationId: deleteSync
+      tags:
+      - Syncs
+      summary: Delete a sync
+      parameters:
+      - $ref: '#/components/parameters/syncId'
+      responses:
+        '200':
+          description: The sync was deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusResponse'
+  /syncs/{sync_id}/trigger:
+    post:
+      operationId: triggerSync
+      tags:
+      - Syncs
+      summary: Trigger a sync run
+      description: Triggers a new run of the sync. Returns a sync run id that can be polled for status. Powers Census orchestration integrations (Airflow, Dagster, Prefect, dbt Cloud).
+      parameters:
+      - $ref: '#/components/parameters/syncId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                force_full_sync:
+                  type: boolean
+                  description: Force a full (non-incremental) sync run.
+      responses:
+        '200':
+          description: The triggered sync run identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerResponse'
+components:
+  schemas:
+    SyncUpdate:
+      type: object
+      properties:
+        label:
+          type: string
+        paused:
+          type: boolean
+        schedule_frequency:
+          type: string
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+    TriggerResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            sync_run_id:
+              type: integer
+              example: 987654
+    FieldMapping:
+      type: object
+      properties:
+        from:
+          type: object
+          properties:
+            type:
+              type: string
+              example: column
+            data:
+              type: string
+              example: email
+        to:
+          type: string
+          example: Email
+        is_primary_identifier:
+          type: boolean
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+    SyncList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sync'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Sync:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 303
+        label:
+          type: string
+          example: Sync Users to Salesforce Contacts
+        operation:
+          type: string
+          enum:
+          - upsert
+          - mirror
+          - append
+          - update
+          - create
+          example: upsert
+        paused:
+          type: boolean
+        schedule_frequency:
+          type: string
+          example: hourly
+        source_attributes:
+          type: object
+          additionalProperties: true
+        destination_attributes:
+          type: object
+          additionalProperties: true
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+        created_at:
+          type: string
+          format: date-time
+    SyncCreate:
+      type: object
+      required:
+      - operation
+      - source_attributes
+      - destination_attributes
+      - mappings
+      properties:
+        label:
+          type: string
+        operation:
+          type: string
+          enum:
+          - upsert
+          - mirror
+          - append
+          - update
+          - create
+        source_attributes:
+          type: object
+          additionalProperties: true
+        destination_attributes:
+          type: object
+          additionalProperties: true
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+        schedule_frequency:
+          type: string
+          example: hourly
+    SyncResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Sync'
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        default: 25
+    syncId:
+      name: sync_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        default: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.

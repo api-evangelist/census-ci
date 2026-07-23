@@ -1,0 +1,191 @@
+openapi: 3.0.1
+info:
+  title: Census Management Connectors Sources API
+  description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: Census Management API (region-specific base URL may vary)
+security:
+- bearerAuth: []
+tags:
+- name: Sources
+paths:
+  /sources:
+    get:
+      operationId: listSources
+      tags:
+      - Sources
+      summary: List sources
+      description: Returns the source connections configured in the workspace.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of sources.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceList'
+    post:
+      operationId: createSource
+      tags:
+      - Sources
+      summary: Create a source
+      description: Creates a new source connection in the workspace.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SourceCreate'
+      responses:
+        '201':
+          description: The created source.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceResponse'
+  /sources/{source_id}:
+    get:
+      operationId: getSource
+      tags:
+      - Sources
+      summary: Fetch a source
+      parameters:
+      - $ref: '#/components/parameters/sourceId'
+      responses:
+        '200':
+          description: A source object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceResponse'
+  /sources/{source_id}/objects:
+    get:
+      operationId: listSourceObjects
+      tags:
+      - Sources
+      summary: List source objects
+      description: Lists the tables, views, and models available in the source.
+      parameters:
+      - $ref: '#/components/parameters/sourceId'
+      responses:
+        '200':
+          description: A list of source objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SourceObjectList'
+components:
+  schemas:
+    SourceCreate:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          example: snowflake
+        credentials:
+          type: object
+          additionalProperties: true
+    Source:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 101
+        name:
+          type: string
+          example: Production Snowflake
+        type:
+          type: string
+          example: snowflake
+        connection_details:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    SourceResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          $ref: '#/components/schemas/Source'
+    SourceObjectList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceObject'
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+    SourceObject:
+      type: object
+      properties:
+        name:
+          type: string
+          example: analytics.public.users
+        type:
+          type: string
+          example: table
+    SourceList:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+  parameters:
+    sourceId:
+      name: source_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    perPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        default: 25
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        default: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.

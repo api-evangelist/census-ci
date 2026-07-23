@@ -1,0 +1,165 @@
+openapi: 3.0.1
+info:
+  title: Census Management Connectors Sync Runs API
+  description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: Census Management API (region-specific base URL may vary)
+security:
+- bearerAuth: []
+tags:
+- name: Sync Runs
+paths:
+  /syncs/{sync_id}/sync_runs:
+    get:
+      operationId: listSyncRunsForSync
+      tags:
+      - Sync Runs
+      summary: List sync runs for a sync
+      parameters:
+      - $ref: '#/components/parameters/syncId'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of sync runs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunList'
+  /sync_runs:
+    get:
+      operationId: listSyncRuns
+      tags:
+      - Sync Runs
+      summary: List sync runs
+      description: Lists sync runs across the workspace.
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of sync runs.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunList'
+  /sync_runs/{sync_run_id}:
+    get:
+      operationId: getSyncRun
+      tags:
+      - Sync Runs
+      summary: Fetch a sync run
+      parameters:
+      - name: sync_run_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A sync run object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncRunResponse'
+components:
+  parameters:
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        default: 1
+    perPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        default: 25
+    syncId:
+      name: sync_id
+      in: path
+      required: true
+      schema:
+        type: integer
+  schemas:
+    SyncRun:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 987654
+        sync_id:
+          type: integer
+          example: 303
+        status:
+          type: string
+          enum:
+          - queued
+          - working
+          - completed
+          - failed
+          - skipped
+          example: completed
+        error_message:
+          type: string
+          nullable: true
+        records_processed:
+          type: integer
+          example: 12000
+        records_updated:
+          type: integer
+          example: 340
+        records_failed:
+          type: integer
+          example: 2
+        records_invalid:
+          type: integer
+          example: 0
+        created_at:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+    SyncRunResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/SyncRun'
+    SyncRunList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncRun'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.

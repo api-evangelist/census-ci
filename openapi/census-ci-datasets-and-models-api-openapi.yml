@@ -1,0 +1,177 @@
+openapi: 3.0.1
+info:
+  title: Census Management Connectors Datasets and Models API
+  description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: Census Management API (region-specific base URL may vary)
+security:
+- bearerAuth: []
+tags:
+- name: Datasets and Models
+paths:
+  /models:
+    get:
+      operationId: listModels
+      tags:
+      - Datasets and Models
+      summary: List models
+      description: Lists the SQL models defined in the workspace.
+      responses:
+        '200':
+          description: A list of models.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+    post:
+      operationId: createModel
+      tags:
+      - Datasets and Models
+      summary: Create a model
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreate'
+      responses:
+        '201':
+          description: The created model.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+  /models/{model_id}:
+    get:
+      operationId: getModel
+      tags:
+      - Datasets and Models
+      summary: Fetch a model
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A model object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+    patch:
+      operationId: updateModel
+      tags:
+      - Datasets and Models
+      summary: Update a model
+      parameters:
+      - name: model_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreate'
+      responses:
+        '200':
+          description: The updated model.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+  /datasets:
+    get:
+      operationId: listDatasets
+      tags:
+      - Datasets and Models
+      summary: List datasets
+      responses:
+        '200':
+          description: A list of datasets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelList'
+    post:
+      operationId: createDataset
+      tags:
+      - Datasets and Models
+      summary: Create a dataset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModelCreate'
+      responses:
+        '201':
+          description: The created dataset.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelResponse'
+components:
+  schemas:
+    Model:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 404
+        name:
+          type: string
+          example: active_users
+        query:
+          type: string
+          example: SELECT id, email, plan FROM analytics.users WHERE active
+        source_id:
+          type: integer
+          example: 101
+        created_at:
+          type: string
+          format: date-time
+    ModelList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    ModelCreate:
+      type: object
+      required:
+      - name
+      - query
+      - source_id
+      properties:
+        name:
+          type: string
+        query:
+          type: string
+        source_id:
+          type: integer
+    ModelResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Model'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.

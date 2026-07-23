@@ -1,0 +1,122 @@
+openapi: 3.0.1
+info:
+  title: Census Management Connectors Segments API
+  description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: Census Management API (region-specific base URL may vary)
+security:
+- bearerAuth: []
+tags:
+- name: Segments
+paths:
+  /segments:
+    get:
+      operationId: listSegments
+      tags:
+      - Segments
+      summary: List segments
+      description: Lists Audience Hub segments in the workspace.
+      responses:
+        '200':
+          description: A list of segments.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentList'
+    post:
+      operationId: createSegment
+      tags:
+      - Segments
+      summary: Create a segment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SegmentCreate'
+      responses:
+        '201':
+          description: The created segment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentResponse'
+  /segments/{segment_id}:
+    get:
+      operationId: getSegment
+      tags:
+      - Segments
+      summary: Fetch a segment
+      parameters:
+      - name: segment_id
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A segment object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentResponse'
+components:
+  schemas:
+    SegmentCreate:
+      type: object
+      required:
+      - name
+      - entity
+      properties:
+        name:
+          type: string
+        entity:
+          type: string
+        filters:
+          type: object
+          additionalProperties: true
+    Segment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 505
+        name:
+          type: string
+          example: High Value Customers
+        entity:
+          type: string
+          example: users
+        filters:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+    SegmentList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Segment'
+    SegmentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Segment'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.

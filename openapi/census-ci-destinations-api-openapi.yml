@@ -1,0 +1,184 @@
+openapi: 3.0.1
+info:
+  title: Census Management Connectors Destinations API
+  description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
+  termsOfService: https://www.getcensus.com/terms
+  contact:
+    name: Census Support
+    url: https://developers.getcensus.com
+  version: '1.0'
+servers:
+- url: https://app.getcensus.com/api/v1
+  description: Census Management API (region-specific base URL may vary)
+security:
+- bearerAuth: []
+tags:
+- name: Destinations
+paths:
+  /destinations:
+    get:
+      operationId: listDestinations
+      tags:
+      - Destinations
+      summary: List destinations
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/perPage'
+      responses:
+        '200':
+          description: A paginated list of destinations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationList'
+    post:
+      operationId: createDestination
+      tags:
+      - Destinations
+      summary: Create a destination
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DestinationCreate'
+      responses:
+        '201':
+          description: The created destination.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationResponse'
+  /destinations/{destination_id}:
+    get:
+      operationId: getDestination
+      tags:
+      - Destinations
+      summary: Fetch a destination
+      parameters:
+      - $ref: '#/components/parameters/destinationId'
+      responses:
+        '200':
+          description: A destination object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationResponse'
+  /destinations/{destination_id}/objects:
+    get:
+      operationId: listDestinationObjects
+      tags:
+      - Destinations
+      summary: List destination objects
+      description: Lists the objects Census can write to in the destination.
+      parameters:
+      - $ref: '#/components/parameters/destinationId'
+      responses:
+        '200':
+          description: A list of destination objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DestinationObjectList'
+components:
+  schemas:
+    DestinationObjectList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DestinationObject'
+    DestinationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Destination'
+    DestinationList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Destination'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Destination:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 202
+        name:
+          type: string
+          example: Salesforce Production
+        type:
+          type: string
+          example: salesforce
+        created_at:
+          type: string
+          format: date-time
+    DestinationCreate:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          example: salesforce
+        credentials:
+          type: object
+          additionalProperties: true
+    DestinationObject:
+      type: object
+      properties:
+        label:
+          type: string
+          example: Contact
+        full_name:
+          type: string
+          example: contact
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+  parameters:
+    perPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        default: 25
+    destinationId:
+      name: destination_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        default: 1
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Workspace API access token passed as a Bearer token.
