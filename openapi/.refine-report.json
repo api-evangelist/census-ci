@@ -1,0 +1,26 @@
+{
+  "provider": "census-ci",
+  "sources": [
+    "census-ci-connectors-api-openapi.yml",
+    "census-ci-datasets-and-models-api-openapi.yml",
+    "census-ci-destinations-api-openapi.yml",
+    "census-ci-segments-api-openapi.yml",
+    "census-ci-sources-api-openapi.yml",
+    "census-ci-sync-runs-api-openapi.yml",
+    "census-ci-syncs-api-openapi.yml"
+  ],
+  "outputs": [
+    "census-ci-connectors-api-openapi.yml",
+    "census-ci-datasets-and-models-api-openapi.yml",
+    "census-ci-destinations-api-openapi.yml",
+    "census-ci-segments-api-openapi.yml",
+    "census-ci-sources-api-openapi.yml",
+    "census-ci-sync-runs-api-openapi.yml",
+    "census-ci-syncs-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
