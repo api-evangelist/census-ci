@@ -1,0 +1,669 @@
+{
+  "item": [
+    {
+      "id": "fbb10526-29fe-4b40-a4f9-ea68781c040c",
+      "name": "Syncs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87a07248-a2c5-4f35-92f8-d8aa035f9ee6",
+          "name": "List syncs",
+          "request": {
+            "name": "List syncs",
+            "description": {
+              "content": "Returns the syncs configured in the workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "syncs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated results."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of records per page."
+                },
+                {
+                  "disabled": false,
+                  "key": "order",
+                  "value": "<string>",
+                  "description": "Sort order for the results."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bf8b11b0-2cef-4151-b2e4-12fe54016d32",
+              "name": "A paginated list of syncs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    },
+                    {
+                      "key": "order",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": [\n    {\n      \"id\": 303,\n      \"label\": \"Sync Users to Salesforce Contacts\",\n      \"operation\": \"upsert\",\n      \"paused\": false,\n      \"schedule_frequency\": \"hourly\",\n      \"source_attributes\": {\n        \"key_0\": 246.7686036575978,\n        \"key_1\": 3412,\n        \"key_2\": \"string\",\n        \"key_3\": true\n      },\n      \"destination_attributes\": {\n        \"key_0\": 4912.023462296511,\n        \"key_1\": 2005\n      },\n      \"mappings\": [\n        {\n          \"from\": {\n            \"type\": \"column\",\n            \"data\": \"email\"\n          },\n          \"to\": \"Email\",\n          \"is_primary_identifier\": false\n        },\n        {\n          \"from\": {\n            \"type\": \"column\",\n            \"data\": \"email\"\n          },\n          \"to\": \"Email\",\n          \"is_primary_identifier\": true\n        }\n      ],\n      \"created_at\": \"2015-02-01T01:07:03.060Z\"\n    },\n    {\n      \"id\": 303,\n      \"label\": \"Sync Users to Salesforce Contacts\",\n      \"operation\": \"upsert\",\n      \"paused\": false,\n      \"schedule_frequency\": \"hourly\",\n      \"source_attributes\": {\n        \"key_0\": \"string\",\n        \"key_1\": false\n      },\n      \"destination_attributes\": {\n        \"key_0\": true,\n        \"key_1\": 8133,\n        \"key_2\": 20\n      },\n      \"mappings\": [\n        {\n          \"from\": {\n            \"type\": \"column\",\n            \"data\": \"email\"\n          },\n          \"to\": \"Email\",\n          \"is_primary_identifier\": false\n        },\n        {\n          \"from\": {\n            \"type\": \"column\",\n            \"data\": \"email\"\n          },\n          \"to\": \"Email\",\n          \"is_primary_identifier\": false\n        }\n      ],\n      \"created_at\": \"1977-05-07T13:49:31.791Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 3707,\n    \"per_page\": 125,\n    \"total\": 8585\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "045ce504-060a-4d9e-8e2a-7b8931acf366",
+          "name": "Create a sync",
+          "request": {
+            "name": "Create a sync",
+            "description": {
+              "content": "Creates a new sync mapping a source dataset/model to a destination object with field mappings, an operation, and a schedule.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "syncs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"operation\": \"<string>\",\n  \"source_attributes\": {\n    \"key_0\": true,\n    \"key_1\": false,\n    \"key_2\": false,\n    \"key_3\": 2938\n  },\n  \"destination_attributes\": {\n    \"key_0\": false,\n    \"key_1\": 7093.488756191508\n  },\n  \"mappings\": [\n    {\n      \"from\": {\n        \"type\": \"<string>\",\n        \"data\": \"<string>\"\n      },\n      \"to\": \"<string>\",\n      \"is_primary_identifier\": \"<boolean>\"\n    },\n    {\n      \"from\": {\n        \"type\": \"<string>\",\n        \"data\": \"<string>\"\n      },\n      \"to\": \"<string>\",\n      \"is_primary_identifier\": \"<boolean>\"\n    }\n  ],\n  \"label\": \"<string>\",\n  \"schedule_frequency\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "28c18b86-7330-4a60-9a48-4428c092adb9",
+              "name": "The created sync.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"operation\": \"<string>\",\n  \"source_attributes\": {\n    \"key_0\": \"string\",\n    \"key_1\": 8548,\n    \"key_2\": false\n  },\n  \"destination_attributes\": {\n    \"key_0\": 6977,\n    \"key_1\": \"string\",\n    \"key_2\": false,\n    \"key_3\": 6769\n  },\n  \"mappings\": [\n    {\n      \"from\": {\n        \"type\": \"column\",\n        \"data\": \"email\"\n      },\n      \"to\": \"Email\",\n      \"is_primary_identifier\": \"<boolean>\"\n    },\n    {\n      \"from\": {\n        \"type\": \"column\",\n        \"data\": \"email\"\n      },\n      \"to\": \"Email\",\n      \"is_primary_identifier\": \"<boolean>\"\n    }\n  ],\n  \"label\": \"<string>\",\n  \"schedule_frequency\": \"hourly\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": {\n    \"id\": 303,\n    \"label\": \"Sync Users to Salesforce Contacts\",\n    \"operation\": \"upsert\",\n    \"paused\": false,\n    \"schedule_frequency\": \"hourly\",\n    \"source_attributes\": {\n      \"key_0\": false,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"destination_attributes\": {\n      \"key_0\": 8313,\n      \"key_1\": 8351.886274687906\n    },\n    \"mappings\": [\n      {\n        \"from\": {\n          \"type\": \"column\",\n          \"data\": \"email\"\n        },\n        \"to\": \"Email\",\n        \"is_primary_identifier\": \"<boolean>\"\n      },\n      {\n        \"from\": {\n          \"type\": \"column\",\n          \"data\": \"email\"\n        },\n        \"to\": \"Email\",\n        \"is_primary_identifier\": \"<boolean>\"\n      }\n    ],\n    \"created_at\": \"1957-05-13T22:10:35.431Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b4ee684d-5273-41e7-a313-07f25a497693",
+          "name": "Fetch a sync",
+          "request": {
+            "name": "Fetch a sync",
+            "description": {},
+            "url": {
+              "path": [
+                "syncs",
+                ":sync_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "sync_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b81421c4-7737-4d2f-956e-a239b2b3abf9",
+              "name": "A sync object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs",
+                    ":sync_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "sync_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": {\n    \"id\": 303,\n    \"label\": \"Sync Users to Salesforce Contacts\",\n    \"operation\": \"upsert\",\n    \"paused\": false,\n    \"schedule_frequency\": \"hourly\",\n    \"source_attributes\": {\n      \"key_0\": false,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"destination_attributes\": {\n      \"key_0\": 8313,\n      \"key_1\": 8351.886274687906\n    },\n    \"mappings\": [\n      {\n        \"from\": {\n          \"type\": \"column\",\n          \"data\": \"email\"\n        },\n        \"to\": \"Email\",\n        \"is_primary_identifier\": \"<boolean>\"\n      },\n      {\n        \"from\": {\n          \"type\": \"column\",\n          \"data\": \"email\"\n        },\n        \"to\": \"Email\",\n        \"is_primary_identifier\": \"<boolean>\"\n      }\n    ],\n    \"created_at\": \"1957-05-13T22:10:35.431Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46476864-5acf-480d-82be-b8e59c223d47",
+          "name": "Update a sync",
+          "request": {
+            "name": "Update a sync",
+            "description": {},
+            "url": {
+              "path": [
+                "syncs",
+                ":sync_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "sync_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"<string>\",\n  \"paused\": \"<boolean>\",\n  \"schedule_frequency\": \"<string>\",\n  \"mappings\": [\n    {\n      \"from\": {\n        \"type\": \"<string>\",\n        \"data\": \"<string>\"\n      },\n      \"to\": \"<string>\",\n      \"is_primary_identifier\": \"<boolean>\"\n    },\n    {\n      \"from\": {\n        \"type\": \"<string>\",\n        \"data\": \"<string>\"\n      },\n      \"to\": \"<string>\",\n      \"is_primary_identifier\": \"<boolean>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d68a30b0-97e8-40ff-9109-be22c0df7f13",
+              "name": "The updated sync.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs",
+                    ":sync_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "sync_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"<string>\",\n  \"paused\": \"<boolean>\",\n  \"schedule_frequency\": \"<string>\",\n  \"mappings\": [\n    {\n      \"from\": {\n        \"type\": \"column\",\n        \"data\": \"email\"\n      },\n      \"to\": \"Email\",\n      \"is_primary_identifier\": \"<boolean>\"\n    },\n    {\n      \"from\": {\n        \"type\": \"column\",\n        \"data\": \"email\"\n      },\n      \"to\": \"Email\",\n      \"is_primary_identifier\": \"<boolean>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": {\n    \"id\": 303,\n    \"label\": \"Sync Users to Salesforce Contacts\",\n    \"operation\": \"upsert\",\n    \"paused\": false,\n    \"schedule_frequency\": \"hourly\",\n    \"source_attributes\": {\n      \"key_0\": false,\n      \"key_1\": \"string\",\n      \"key_2\": \"string\"\n    },\n    \"destination_attributes\": {\n      \"key_0\": 8313,\n      \"key_1\": 8351.886274687906\n    },\n    \"mappings\": [\n      {\n        \"from\": {\n          \"type\": \"column\",\n          \"data\": \"email\"\n        },\n        \"to\": \"Email\",\n        \"is_primary_identifier\": \"<boolean>\"\n      },\n      {\n        \"from\": {\n          \"type\": \"column\",\n          \"data\": \"email\"\n        },\n        \"to\": \"Email\",\n        \"is_primary_identifier\": \"<boolean>\"\n      }\n    ],\n    \"created_at\": \"1957-05-13T22:10:35.431Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "462a63ee-fe45-44b8-90c3-9c7607000aa2",
+          "name": "Delete a sync",
+          "request": {
+            "name": "Delete a sync",
+            "description": {},
+            "url": {
+              "path": [
+                "syncs",
+                ":sync_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "sync_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "996ff41f-30f9-48c0-b717-668939672600",
+              "name": "The sync was deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs",
+                    ":sync_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "sync_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3b5011b4-c77a-4741-85fc-abcbd217a727",
+          "name": "Trigger a sync run",
+          "request": {
+            "name": "Trigger a sync run",
+            "description": {
+              "content": "Triggers a new run of the sync. Returns a sync run id that can be polled for status. Powers Census orchestration integrations (Airflow, Dagster, Prefect, dbt Cloud).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "syncs",
+                ":sync_id",
+                "trigger"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "sync_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"force_full_sync\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "178ce00f-17dc-480d-b82c-64d24e455d3c",
+              "name": "The triggered sync run identifier.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs",
+                    ":sync_id",
+                    "trigger"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "sync_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"force_full_sync\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"success\",\n  \"data\": {\n    \"sync_run_id\": 987654\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.getcensus.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3ae355d1-400e-482d-88c1-f4206209d57b",
+    "name": "Census Management Connectors Syncs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.\n\nContact Support:\n Name: Census Support",
+      "type": "text/plain"
+    }
+  }
+}

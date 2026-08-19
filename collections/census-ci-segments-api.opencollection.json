@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Management Connectors Segments API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Segments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List segments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/segments"
+          },
+          "docs": "Lists Audience Hub segments in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create a segment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/segments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a segment"
+        },
+        {
+          "info": {
+            "name": "Fetch a segment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/segments/:segment_id",
+            "params": [
+              {
+                "name": "segment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a segment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,351 @@
+{
+  "item": [
+    {
+      "id": "55aadb76-104e-4b04-8bee-0f1397aace76",
+      "name": "Sync Runs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f0fe70f0-c6a0-4a34-8d26-bfb51c07bb3f",
+          "name": "List sync runs for a sync",
+          "request": {
+            "name": "List sync runs for a sync",
+            "description": {},
+            "url": {
+              "path": [
+                "syncs",
+                ":sync_id",
+                "sync_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated results."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of records per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "sync_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3fe707b0-bf37-4af2-9013-f3f171e9f729",
+              "name": "A paginated list of sync runs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "syncs",
+                    ":sync_id",
+                    "sync_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "sync_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": [\n    {\n      \"id\": 987654,\n      \"sync_id\": 303,\n      \"status\": \"completed\",\n      \"error_message\": \"string\",\n      \"records_processed\": 12000,\n      \"records_updated\": 340,\n      \"records_failed\": 2,\n      \"records_invalid\": 0,\n      \"created_at\": \"2014-01-27T11:17:08.748Z\",\n      \"completed_at\": \"1986-03-27T23:32:32.551Z\"\n    },\n    {\n      \"id\": 987654,\n      \"sync_id\": 303,\n      \"status\": \"completed\",\n      \"error_message\": \"string\",\n      \"records_processed\": 12000,\n      \"records_updated\": 340,\n      \"records_failed\": 2,\n      \"records_invalid\": 0,\n      \"created_at\": \"2003-09-22T00:39:02.916Z\",\n      \"completed_at\": \"1998-06-01T13:53:55.010Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 7798,\n    \"per_page\": 1604,\n    \"total\": 12\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e7903ed5-24cf-483c-83fb-629c8a59089b",
+          "name": "List sync runs",
+          "request": {
+            "name": "List sync runs",
+            "description": {
+              "content": "Lists sync runs across the workspace.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sync_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number for paginated results."
+                },
+                {
+                  "disabled": false,
+                  "key": "per_page",
+                  "value": "25",
+                  "description": "Number of records per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "41ed3dd5-3691-4e91-a9b3-2ede00b86191",
+              "name": "A paginated list of sync runs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sync_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "per_page",
+                      "value": "25"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": [\n    {\n      \"id\": 987654,\n      \"sync_id\": 303,\n      \"status\": \"completed\",\n      \"error_message\": \"string\",\n      \"records_processed\": 12000,\n      \"records_updated\": 340,\n      \"records_failed\": 2,\n      \"records_invalid\": 0,\n      \"created_at\": \"1968-04-01T21:09:51.171Z\",\n      \"completed_at\": \"2002-12-22T19:26:50.242Z\"\n    },\n    {\n      \"id\": 987654,\n      \"sync_id\": 303,\n      \"status\": \"completed\",\n      \"error_message\": \"string\",\n      \"records_processed\": 12000,\n      \"records_updated\": 340,\n      \"records_failed\": 2,\n      \"records_invalid\": 0,\n      \"created_at\": \"1989-02-06T06:19:24.139Z\",\n      \"completed_at\": \"1991-04-06T02:45:51.960Z\"\n    }\n  ],\n  \"pagination\": {\n    \"page\": 9786,\n    \"per_page\": 7839,\n    \"total\": 1363\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce0c9990-1c1e-49a0-b55f-3bcb562a71bd",
+          "name": "Fetch a sync run",
+          "request": {
+            "name": "Fetch a sync run",
+            "description": {},
+            "url": {
+              "path": [
+                "sync_runs",
+                ":sync_run_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "sync_run_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5e9d020b-e5e9-4d75-a907-f2e8128bb59b",
+              "name": "A sync run object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sync_runs",
+                    ":sync_run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "sync_run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": {\n    \"id\": 987654,\n    \"sync_id\": 303,\n    \"status\": \"completed\",\n    \"error_message\": \"string\",\n    \"records_processed\": 12000,\n    \"records_updated\": 340,\n    \"records_failed\": 2,\n    \"records_invalid\": 0,\n    \"created_at\": \"2005-04-17T16:49:03.783Z\",\n    \"completed_at\": \"1992-06-28T05:59:37.273Z\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.getcensus.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9b45a3c2-74b8-448d-baa9-e0b67a012edd",
+    "name": "Census Management Connectors Sync Runs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.\n\nContact Support:\n Name: Census Support",
+      "type": "text/plain"
+    }
+  }
+}

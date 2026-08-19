@@ -1,0 +1,150 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Management Connectors Syncs API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Syncs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List syncs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated results."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page."
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "Sort order for the results."
+              }
+            ]
+          },
+          "docs": "Returns the syncs configured in the workspace."
+        },
+        {
+          "info": {
+            "name": "Create a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/syncs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new sync mapping a source dataset/model to a destination object with field mappings, an operation, and a schedule."
+        },
+        {
+          "info": {
+            "name": "Fetch a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id",
+            "params": [
+              {
+                "name": "sync_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a sync"
+        },
+        {
+          "info": {
+            "name": "Update a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id",
+            "params": [
+              {
+                "name": "sync_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a sync"
+        },
+        {
+          "info": {
+            "name": "Delete a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id",
+            "params": [
+              {
+                "name": "sync_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a sync"
+        },
+        {
+          "info": {
+            "name": "Trigger a sync run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id/trigger",
+            "params": [
+              {
+                "name": "sync_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Triggers a new run of the sync. Returns a sync run id that can be polled for status. Powers Census orchestration integrations (Airflow, Dagster, Prefect, dbt Cloud)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,97 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Management Connectors Sync Runs API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sync Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sync runs for a sync",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/syncs/:sync_id/sync_runs",
+            "params": [
+              {
+                "name": "sync_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated results."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page."
+              }
+            ]
+          },
+          "docs": "List sync runs for a sync"
+        },
+        {
+          "info": {
+            "name": "List sync runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sync_runs",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for paginated results."
+              },
+              {
+                "name": "per_page",
+                "value": "",
+                "type": "query",
+                "description": "Number of records per page."
+              }
+            ]
+          },
+          "docs": "Lists sync runs across the workspace."
+        },
+        {
+          "info": {
+            "name": "Fetch a sync run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/sync_runs/:sync_run_id",
+            "params": [
+              {
+                "name": "sync_run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a sync run"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

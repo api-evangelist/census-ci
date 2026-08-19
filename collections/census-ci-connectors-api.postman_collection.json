@@ -1,0 +1,217 @@
+{
+  "item": [
+    {
+      "id": "cf68351d-529b-4c97-9412-bcb5686f12a2",
+      "name": "Connectors",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8d2122c8-20aa-426b-8118-3cfb98a22329",
+          "name": "List connectors",
+          "request": {
+            "name": "List connectors",
+            "description": {
+              "content": "Lists the connector services Census supports.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a604a5c-355f-408e-8662-8cc562201808",
+              "name": "A list of connector services.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": [\n    {\n      \"service_name\": \"salesforce\",\n      \"label\": \"Salesforce\"\n    },\n    {\n      \"service_name\": \"salesforce\",\n      \"label\": \"Salesforce\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5cc78695-7de7-44fe-96f9-93a43d9dbee1",
+          "name": "List destination object types",
+          "request": {
+            "name": "List destination object types",
+            "description": {
+              "content": "Lists the object types available for a given destination connector service (for example salesforce, hubspot, google_ads).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "connectors",
+                ":service_name",
+                "object_types"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "service_name",
+                  "description": "(Required) The connector service name, e.g. salesforce."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf87b65e-7b66-4cec-b493-66ba2792e25b",
+              "name": "A list of object types for the service.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "connectors",
+                    ":service_name",
+                    "object_types"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "service_name",
+                      "description": "(Required) The connector service name, e.g. salesforce."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"string\",\n  \"data\": [\n    {\n      \"label\": \"Lead\",\n      \"full_name\": \"lead\",\n      \"allows_custom_fields\": false\n    },\n    {\n      \"label\": \"Lead\",\n      \"full_name\": \"lead\",\n      \"allows_custom_fields\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://app.getcensus.com/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f3d5640f-0d9b-4a81-964b-d8604d3dbc36",
+    "name": "Census Management Connectors API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.\n\nContact Support:\n Name: Census Support",
+      "type": "text/plain"
+    }
+  }
+}

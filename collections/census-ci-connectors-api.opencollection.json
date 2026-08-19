@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Census Management Connectors API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Connectors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List connectors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/connectors"
+          },
+          "docs": "Lists the connector services Census supports."
+        },
+        {
+          "info": {
+            "name": "List destination object types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://app.getcensus.com/api/v1/connectors/:service_name/object_types",
+            "params": [
+              {
+                "name": "service_name",
+                "value": "",
+                "type": "path",
+                "description": "The connector service name, e.g. salesforce."
+              }
+            ]
+          },
+          "docs": "Lists the object types available for a given destination connector service (for example salesforce, hubspot, google_ads)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
