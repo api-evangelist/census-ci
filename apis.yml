@@ -8,6 +8,18 @@ description: Census is a reverse ETL and data activation platform that syncs mod
   The Census Management API (base https://app.getcensus.com/api/v1, Bearer workspace
   token) lets teams manage sources, destinations, syncs, sync runs, datasets/models,
   connections, and segments/audiences programmatically.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
