@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Census Management Connectors Syncs API
   description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
@@ -135,7 +135,77 @@ paths:
               schema:
                 $ref: '#/components/schemas/TriggerResponse'
 components:
+  parameters:
+    syncId:
+      name: sync_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    perPage:
+      name: per_page
+      in: query
+      description: Number of records per page.
+      schema:
+        type: integer
+        default: 25
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
+      schema:
+        type: integer
+        default: 1
   schemas:
+    SyncCreate:
+      type: object
+      required:
+      - operation
+      - source_attributes
+      - destination_attributes
+      - mappings
+      properties:
+        label:
+          type: string
+        operation:
+          type: string
+          enum:
+          - upsert
+          - mirror
+          - append
+          - update
+          - create
+        source_attributes:
+          type: object
+          additionalProperties: true
+        destination_attributes:
+          type: object
+          additionalProperties: true
+        mappings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldMapping'
+        schedule_frequency:
+          type: string
+          example: hourly
+    TriggerResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: object
+          properties:
+            sync_run_id:
+              type: integer
+              example: 987654
+    StatusResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
     SyncUpdate:
       type: object
       properties:
@@ -149,52 +219,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FieldMapping'
-    TriggerResponse:
+    Pagination:
       type: object
       properties:
-        status:
-          type: string
-          example: success
-        data:
-          type: object
-          properties:
-            sync_run_id:
-              type: integer
-              example: 987654
-    FieldMapping:
-      type: object
-      properties:
-        from:
-          type: object
-          properties:
-            type:
-              type: string
-              example: column
-            data:
-              type: string
-              example: email
-        to:
-          type: string
-          example: Email
-        is_primary_identifier:
-          type: boolean
-    StatusResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-    SyncList:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Sync'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
     Sync:
       type: object
       properties:
@@ -231,37 +264,23 @@ components:
         created_at:
           type: string
           format: date-time
-    SyncCreate:
+    FieldMapping:
       type: object
-      required:
-      - operation
-      - source_attributes
-      - destination_attributes
-      - mappings
       properties:
-        label:
-          type: string
-        operation:
-          type: string
-          enum:
-          - upsert
-          - mirror
-          - append
-          - update
-          - create
-        source_attributes:
+        from:
           type: object
-          additionalProperties: true
-        destination_attributes:
-          type: object
-          additionalProperties: true
-        mappings:
-          type: array
-          items:
-            $ref: '#/components/schemas/FieldMapping'
-        schedule_frequency:
+          properties:
+            type:
+              type: string
+              example: column
+            data:
+              type: string
+              example: email
+        to:
           type: string
-          example: hourly
+          example: Email
+        is_primary_identifier:
+          type: boolean
     SyncResponse:
       type: object
       properties:
@@ -269,36 +288,17 @@ components:
           type: string
         data:
           $ref: '#/components/schemas/Sync'
-    Pagination:
+    SyncList:
       type: object
       properties:
-        page:
-          type: integer
-        per_page:
-          type: integer
-        total:
-          type: integer
-  parameters:
-    perPage:
-      name: per_page
-      in: query
-      description: Number of records per page.
-      schema:
-        type: integer
-        default: 25
-    syncId:
-      name: sync_id
-      in: path
-      required: true
-      schema:
-        type: integer
-    page:
-      name: page
-      in: query
-      description: Page number for paginated results.
-      schema:
-        type: integer
-        default: 1
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sync'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
   securitySchemes:
     bearerAuth:
       type: http

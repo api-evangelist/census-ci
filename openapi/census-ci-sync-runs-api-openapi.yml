@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Census Management Connectors Sync Runs API
   description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
@@ -70,13 +70,12 @@ paths:
                 $ref: '#/components/schemas/SyncRunResponse'
 components:
   parameters:
-    page:
-      name: page
-      in: query
-      description: Page number for paginated results.
+    syncId:
+      name: sync_id
+      in: path
+      required: true
       schema:
         type: integer
-        default: 1
     perPage:
       name: per_page
       in: query
@@ -84,13 +83,25 @@ components:
       schema:
         type: integer
         default: 25
-    syncId:
-      name: sync_id
-      in: path
-      required: true
+    page:
+      name: page
+      in: query
+      description: Page number for paginated results.
       schema:
         type: integer
+        default: 1
   schemas:
+    SyncRunList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SyncRun'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     SyncRun:
       type: object
       properties:
@@ -110,8 +121,9 @@ components:
           - skipped
           example: completed
         error_message:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         records_processed:
           type: integer
           example: 12000
@@ -128,9 +140,10 @@ components:
           type: string
           format: date-time
         completed_at:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
     SyncRunResponse:
       type: object
       properties:
@@ -138,17 +151,6 @@ components:
           type: string
         data:
           $ref: '#/components/schemas/SyncRun'
-    SyncRunList:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SyncRun'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
     Pagination:
       type: object
       properties:

@@ -21,6 +21,15 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
+  "notes": [
+    "census-ci-connectors-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "census-ci-datasets-and-models-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "census-ci-destinations-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "census-ci-segments-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "census-ci-sources-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "census-ci-sync-runs-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "census-ci-syncs-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
   "skipped": []
 }

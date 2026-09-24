@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Census Management Connectors Segments API
   description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
@@ -68,19 +68,6 @@ paths:
                 $ref: '#/components/schemas/SegmentResponse'
 components:
   schemas:
-    SegmentCreate:
-      type: object
-      required:
-      - name
-      - entity
-      properties:
-        name:
-          type: string
-        entity:
-          type: string
-        filters:
-          type: object
-          additionalProperties: true
     Segment:
       type: object
       properties:
@@ -99,6 +86,26 @@ components:
         created_at:
           type: string
           format: date-time
+    SegmentResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Segment'
+    SegmentCreate:
+      type: object
+      required:
+      - name
+      - entity
+      properties:
+        name:
+          type: string
+        entity:
+          type: string
+        filters:
+          type: object
+          additionalProperties: true
     SegmentList:
       type: object
       properties:
@@ -108,13 +115,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Segment'
-    SegmentResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          $ref: '#/components/schemas/Segment'
   securitySchemes:
     bearerAuth:
       type: http

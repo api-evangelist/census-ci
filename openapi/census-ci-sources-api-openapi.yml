@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Census Management Connectors Sources API
   description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
@@ -84,20 +84,35 @@ paths:
                 $ref: '#/components/schemas/SourceObjectList'
 components:
   schemas:
-    SourceCreate:
+    SourceResponse:
       type: object
-      required:
-      - name
-      - type
       properties:
-        name:
+        status:
           type: string
-        type:
+          example: success
+        data:
+          $ref: '#/components/schemas/Source'
+    SourceObjectList:
+      type: object
+      properties:
+        status:
           type: string
-          example: snowflake
-        credentials:
-          type: object
-          additionalProperties: true
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceObject'
+    SourceList:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
     Source:
       type: object
       properties:
@@ -116,32 +131,6 @@ components:
         created_at:
           type: string
           format: date-time
-    SourceResponse:
-      type: object
-      properties:
-        status:
-          type: string
-          example: success
-        data:
-          $ref: '#/components/schemas/Source'
-    SourceObjectList:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/SourceObject'
-    Pagination:
-      type: object
-      properties:
-        page:
-          type: integer
-        per_page:
-          type: integer
-        total:
-          type: integer
     SourceObject:
       type: object
       properties:
@@ -151,25 +140,30 @@ components:
         type:
           type: string
           example: table
-    SourceList:
+    Pagination:
       type: object
       properties:
-        status:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+    SourceCreate:
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
           type: string
-          example: success
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Source'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+        type:
+          type: string
+          example: snowflake
+        credentials:
+          type: object
+          additionalProperties: true
   parameters:
-    sourceId:
-      name: source_id
-      in: path
-      required: true
-      schema:
-        type: integer
     perPage:
       name: per_page
       in: query
@@ -184,6 +178,12 @@ components:
       schema:
         type: integer
         default: 1
+    sourceId:
+      name: source_id
+      in: path
+      required: true
+      schema:
+        type: integer
   securitySchemes:
     bearerAuth:
       type: http

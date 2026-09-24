@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Census Management Connectors Datasets and Models API
   description: The Census Management API lets you integrate core Census reverse ETL and data activation functionality into your workflows. Manage sources, destinations, syncs, sync runs, datasets/models, connectors, and Audience Hub segments. Requests are authenticated with a workspace API access token passed as a Bearer token in the Authorization header. This is a faithful, representative specification of the public Census Management API; consult the Census API reference for the authoritative and complete schema.
@@ -123,6 +123,35 @@ paths:
                 $ref: '#/components/schemas/ModelResponse'
 components:
   schemas:
+    ModelCreate:
+      type: object
+      required:
+      - name
+      - query
+      - source_id
+      properties:
+        name:
+          type: string
+        query:
+          type: string
+        source_id:
+          type: integer
+    ModelList:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Model'
+    ModelResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        data:
+          $ref: '#/components/schemas/Model'
     Model:
       type: object
       properties:
@@ -141,35 +170,6 @@ components:
         created_at:
           type: string
           format: date-time
-    ModelList:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/Model'
-    ModelCreate:
-      type: object
-      required:
-      - name
-      - query
-      - source_id
-      properties:
-        name:
-          type: string
-        query:
-          type: string
-        source_id:
-          type: integer
-    ModelResponse:
-      type: object
-      properties:
-        status:
-          type: string
-        data:
-          $ref: '#/components/schemas/Model'
   securitySchemes:
     bearerAuth:
       type: http
